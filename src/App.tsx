@@ -14,6 +14,8 @@ export default function App() {
   const [wheelIndex, setWheelIndex] = useState(0);
   const starsContainerRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<HTMLOListElement>(null);
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // Typewriter effect
   useEffect(() => {
@@ -145,6 +147,24 @@ export default function App() {
     };
   }, []);
 
+  // Header shrink state + auto-close mobile menu on resize
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    const mq = window.matchMedia('(min-width:721px)');
+    const onResize = () => {
+      if (mq.matches) setMenuOpen(false);
+    };
+    mq.addEventListener('change', onResize);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      mq.removeEventListener('change', onResize);
+    };
+  }, []);
+
   const wheelItems = [
     'Digital Marketing',
     'Graphic Design',
@@ -182,11 +202,25 @@ export default function App() {
       <div className="stars" id="stars" ref={starsContainerRef} aria-hidden="true"></div>
 
       <div className="wrap">
-        <header>
+        <header className={scrolled ? 'scrolled' : ''}>
           <a className="logo" href="#top">
             Lakshya<i>.</i>
           </a>
-          <nav aria-label="Main">
+          <button
+            type="button"
+            className="menu-btn"
+            aria-label="Toggle navigation menu"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((v) => !v)}
+          >
+            <span></span>
+            <span></span>
+          </button>
+          <nav
+            className={menuOpen ? 'open' : ''}
+            aria-label="Main"
+            onClick={() => setMenuOpen(false)}
+          >
             <a href="#about">About</a>
             <a href="#projects">Projects</a>
             <a href="#faq">FAQ</a>
@@ -388,6 +422,13 @@ export default function App() {
         </div>
         <footer>© Lakshya. Barta, Kaithal, Haryana.</footer>
       </div>
+      <a
+        className={scrolled ? 'totop show' : 'totop'}
+        href="#top"
+        aria-label="Back to top"
+      >
+        ↑
+      </a>
     </>
   );
 }
