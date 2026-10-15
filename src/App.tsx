@@ -14,7 +14,10 @@ import {
   Gamepad2,
   Globe,
   ArrowUpRight,
+  Send,
 } from 'lucide-react';
+
+const WHATSAPP_NUMBER = '919671772205';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -86,6 +89,40 @@ export default function App() {
   const pathRef = useRef<HTMLOListElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // Contact form state
+  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [sent, setSent] = useState(false);
+
+  const handleFormChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+  };
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const lines = [
+      `Hi Lakshya! I found your portfolio.`,
+      ``,
+      `Name: ${form.name.trim()}`,
+      form.email.trim() ? `Email: ${form.email.trim()}` : null,
+      ``,
+      `Message:`,
+      form.message.trim(),
+    ].filter((l): l is string => l !== null);
+
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+      lines.join('\n')
+    )}`;
+
+    // Open WhatsApp (desktop app ya web) — message user ke saath pehle se likha hua
+    window.open(url, '_blank', 'noopener,noreferrer');
+
+    setSent(true);
+    window.setTimeout(() => setSent(false), 4000);
+    setForm({ name: '', email: '', message: '' });
+  };
 
   // Typewriter effect
   useEffect(() => {
@@ -633,21 +670,68 @@ export default function App() {
             >
               <h2 className="t">Let's talk</h2>
               <p>
-                Got a marketing project, a design or a website to build? Message me directly on WhatsApp (+91 96717 72205), send an email, or check my code on{' '}
+                Got a marketing project, a design or a website to build? Neeche form
+                bharo — submit karte hi aapka message seedha WhatsApp par pahunch
+                jayega. You can also email, or check my code on{' '}
                 <a href="https://github.com/jaatlakshya496-jpg" target="_blank" rel="noopener noreferrer">
                   GitHub
                 </a>
                 .
               </p>
+              <div className="contact-card">
+                <form className="cform" onSubmit={handleFormSubmit}>
+                  <div className="frow">
+                    <label className="ffield">
+                      <span>Your name</span>
+                      <input
+                        type="text"
+                        name="name"
+                        placeholder="e.g. Ravi Kumar"
+                        value={form.name}
+                        onChange={handleFormChange}
+                        required
+                      />
+                    </label>
+                    <label className="ffield">
+                      <span>Email (optional)</span>
+                      <input
+                        type="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        value={form.email}
+                        onChange={handleFormChange}
+                      />
+                    </label>
+                  </div>
+                  <label className="ffield">
+                    <span>Your message</span>
+                    <textarea
+                      name="message"
+                      rows={5}
+                      placeholder="Tell me about your project, budget and timeline..."
+                      value={form.message}
+                      onChange={handleFormChange}
+                      required
+                    ></textarea>
+                  </label>
+                  <div className="factions">
+                    <button type="submit" className="btn primary magnetic">
+                      <Send size={16} /> Send on WhatsApp
+                    </button>
+                    {sent && (
+                      <span className="fsent" role="status">
+                        Opening WhatsApp with your message...
+                      </span>
+                    )}
+                  </div>
+                  <p className="fnote">
+                    Submit karte hi aapka message WhatsApp par ban kar khul jayega —
+                    bas Send dabana hai.
+                  </p>
+                </form>
+              </div>
+
               <div className="btns">
-                <a
-                  className="btn primary magnetic"
-                  href="https://wa.me/919671772205?text=Hi%20Lakshya%2C%20I%20saw%20your%20portfolio."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  WhatsApp me
-                </a>
                 <a className="btn magnetic" href="mailto:jaatlakshya496@gmail.com">
                   Email
                 </a>
