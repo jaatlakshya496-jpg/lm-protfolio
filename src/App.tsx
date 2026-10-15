@@ -4,6 +4,76 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
+import { motion } from 'motion/react';
+import {
+  MapPin,
+  GraduationCap,
+  Sparkles,
+  Briefcase,
+  ExternalLink,
+  Gamepad2,
+  Globe,
+  ArrowUpRight,
+} from 'lucide-react';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 32 },
+  show: (i: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, delay: i * 0.12, ease: [0.2, 0.8, 0.2, 1] as const },
+  }),
+};
+
+const staggerParent = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.15 } },
+};
+
+const cardVariant = {
+  hidden: { opacity: 0, y: 40, scale: 0.97 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.65, ease: [0.2, 0.8, 0.2, 1] as const },
+  },
+};
+
+function CountUp({ to, suffix = '' }: { to: number; suffix?: string }) {
+  const [val, setVal] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    let raf = 0;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return;
+        io.disconnect();
+        const start = performance.now();
+        const dur = 1400;
+        const step = (t: number) => {
+          const p = Math.min(1, (t - start) / dur);
+          const eased = 1 - Math.pow(1 - p, 3);
+          setVal(Math.round(eased * to));
+          if (p < 1) raf = requestAnimationFrame(step);
+        };
+        raf = requestAnimationFrame(step);
+      },
+      { threshold: 0.4 }
+    );
+    if (ref.current) io.observe(ref.current);
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(raf);
+    };
+  }, [to]);
+  return (
+    <span ref={ref}>
+      {val}
+      {suffix}
+    </span>
+  );
+}
 
 export default function App() {
   const [roleText, setRoleText] = useState('Digital Marketer');
@@ -44,7 +114,7 @@ export default function App() {
         }
       }
 
-      setRoleText(roles[roleIndexRef.current].slice(0, charIndexRef.current) || '\u00A0');
+      setRoleText(roles[roleIndexRef.current].slice(0, charIndexRef.current) || ' ');
       timeoutId = window.setTimeout(tick, deletingRef.current ? 45 : 85);
     };
 
@@ -130,13 +200,27 @@ export default function App() {
       const r = c.getBoundingClientRect();
       (c as HTMLElement).style.setProperty('--mx', `${pe.clientX - r.left}px`);
       (c as HTMLElement).style.setProperty('--my', `${pe.clientY - r.top}px`);
+      // 3D tilt
+      const rx = ((pe.clientY - r.top) / r.height - 0.5) * -8;
+      const ry = ((pe.clientX - r.left) / r.width - 0.5) * 10;
+      (c as HTMLElement).style.setProperty('--rx', `${rx}deg`);
+      (c as HTMLElement).style.setProperty('--ry', `${ry}deg`);
+    };
+    const resetTilt = (c: Element) => () => {
+      (c as HTMLElement).style.setProperty('--rx', `0deg`);
+      (c as HTMLElement).style.setProperty('--ry', `0deg`);
     };
 
     const cardCleanups: Array<() => void> = [];
     cards.forEach((c) => {
       const handler = handleCardPointer(c);
+      const leave = resetTilt(c);
       c.addEventListener('pointermove', handler);
-      cardCleanups.push(() => c.removeEventListener('pointermove', handler));
+      c.addEventListener('pointerleave', leave);
+      cardCleanups.push(() => {
+        c.removeEventListener('pointermove', handler);
+        c.removeEventListener('pointerleave', leave);
+      });
     });
 
     return () => {
@@ -177,6 +261,17 @@ export default function App() {
     'Digital Marketing',
     'Graphic Design',
     'AI Web Development',
+  ];
+
+  const marquee = [
+    'SEO',
+    'Social Media',
+    'Meta Ads',
+    'Branding',
+    'Canva Design',
+    'AI Websites',
+    'Content Writing',
+    'Prompt Engineering',
   ];
 
   return (
@@ -233,29 +328,67 @@ export default function App() {
             <div className="hero">
               <div className="ghost" aria-hidden="true">AI</div>
               <div>
-                <div className="pill" data-s style={{ '--d': 1 } as React.CSSProperties}>
+                <motion.div
+                  className="pill"
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                >
                   <span className="dot"></span>Available for freelance projects &amp; collaborations
-                </div>
-                <h1 data-s style={{ '--d': 2 } as React.CSSProperties}>I am Lakshya</h1>
-                <p className="sub" data-s style={{ '--d': 3 } as React.CSSProperties}>
+                </motion.div>
+                <motion.h1
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.2 }}
+                >
+                  I am Lakshya
+                </motion.h1>
+                <motion.p
+                  className="sub"
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.32 }}
+                >
                   I'm a <b id="role">{roleText}</b>
                   <span className="cur"></span>
                   <br />
                   from Kaithal, Haryana.
-                </p>
-                <div className="btns" data-s style={{ '--d': 4 } as React.CSSProperties}>
-                  <a className="btn primary" href="#projects">
+                </motion.p>
+                <motion.div
+                  className="btns"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.44 }}
+                >
+                  <a className="btn primary magnetic" href="#projects">
                     View My Work
                   </a>
-                  <a className="btn" href="#contact">
+                  <a className="btn magnetic" href="#contact">
                     Let's Talk
                   </a>
-                </div>
+                </motion.div>
+
+                {/* Mini counters */}
+                <motion.div
+                  className="mini-counts"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.6 }}
+                >
+                  <div><b><CountUp to={3} suffix="+" /></b><span>Skills — Marketing, Design, AI Web</span></div>
+                  <div><b><CountUp to={2} /></b><span>Live Projects</span></div>
+                  <div><b><CountUp to={100} suffix="%" /></b><span>Freelance Ready</span></div>
+                </motion.div>
               </div>
 
-              <div className="visual" data-s style={{ '--d': 3 } as React.CSSProperties}>
+              <motion.div
+                className="visual"
+                initial={{ opacity: 0, scale: 0.94, y: 24 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.35 }}
+              >
                 <div className="pic">
-                  <div className="ring">
+                  <div className="ring float-slow">
                     <div className="avatar" role="img" aria-label="Lakshya">
                       L
                     </div>
@@ -286,17 +419,70 @@ export default function App() {
                     <span>Website &amp; game</span>
                   </div>
                 </div>
+              </motion.div>
+            </div>
+
+            {/* Marquee strip */}
+            <div className="marquee" aria-hidden="true">
+              <div className="marquee-track">
+                {[...marquee, ...marquee].map((m, i) => (
+                  <span key={i} className="mq-item">
+                    <Sparkles size={15} /> {m}
+                  </span>
+                ))}
               </div>
             </div>
 
-            <section id="about" className="about rv">
+            <motion.section
+              id="about"
+              className="about rv"
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: '-80px' }}
+              custom={0}
+            >
               <h2 className="t">About</h2>
-              <p className="big">
-                I'm Lakshya, from Barta, Kaithal, Haryana. I work in digital marketing and use AI tools to make design, content and websites faster and better.
-              </p>
-              <p>
-                I'm currently doing training at Zedking Institute and taking freelance projects. I also love game design and creative AI, so I build small browser games for fun.
-              </p>
+
+              {/* Brief Summary card */}
+              <motion.div
+                className="summary-card"
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, margin: '-60px' }}
+                custom={1}
+              >
+                <div className="summary-head">
+                  <span className="summary-badge"><Sparkles size={14} /> Brief Summary</span>
+                  <h3>Marketing that grows business — powered by AI.</h3>
+                </div>
+                <p className="big">
+                  I'm <b>Lakshya</b> from Barta, Kaithal (Haryana) — a Digital Marketer, Graphic Designer &amp; AI Web Developer. I help local businesses and startups get more customers through SEO, social media, ads, branding and fast, modern websites built with AI tools.
+                </p>
+                <p>
+                  Currently training at <b>Zedking Institute, Kaithal</b> and open for freelance work. My style is simple: clear design, honest marketing, and quick delivery. I also love game design — I built a browser snake game just for fun.
+                </p>
+                <div className="summary-grid">
+                  <div className="s-item">
+                    <MapPin size={17} />
+                    <div><b>Based in</b><span>Barta, Kaithal, Haryana</span></div>
+                  </div>
+                  <div className="s-item">
+                    <GraduationCap size={17} />
+                    <div><b>Training</b><span>Zedking Institute — Digital Marketing</span></div>
+                  </div>
+                  <div className="s-item">
+                    <Briefcase size={17} />
+                    <div><b>Services</b><span>Marketing • Design • AI Websites • Content</span></div>
+                  </div>
+                  <div className="s-item">
+                    <span className="live-dot"></span>
+                    <div><b>Status</b><span>Available for freelance</span></div>
+                  </div>
+                </div>
+              </motion.div>
+
               <ol className="path" id="path" ref={pathRef}>
                 <li>
                   <b>After 12th</b>Joined Zedking Institute, Kaithal.
@@ -308,24 +494,75 @@ export default function App() {
                   <b>Graphic design &amp; AI web development</b>Building designs and websites with AI tools.
                 </li>
               </ol>
-            </section>
+            </motion.section>
 
-            <section id="projects" className="rv">
+            <motion.section
+              id="projects"
+              className="rv"
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: '-80px' }}
+              custom={0}
+            >
               <h2 className="t">Projects</h2>
-              <div className="grid">
-                <a className="card flag" href="https://bvps-school.vercel.app" target="_blank" rel="noopener noreferrer">
-                  <span className="tag">Live website</span>
-                  <h3>Bal Vikas Public School</h3>
+              <p className="sec-sub">Har project live hai — hover karo, 3D tilt + shine dekho. Click karke kholo.</p>
+              <motion.div
+                className="grid"
+                variants={staggerParent}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, margin: '-60px' }}
+              >
+                {/* Project 1 */}
+                <motion.a
+                  className="card flag project-card"
+                  variants={cardVariant}
+                  whileHover={{ y: -8, scale: 1.015 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                  href="https://bvps-school.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="preview browser">
+                    <div className="browser-bar"><i></i><i></i><i></i><span>bvps-school.vercel.app</span></div>
+                    <div className="browser-body">
+                      <div className="mock-nav"></div>
+                      <div className="mock-hero"><span>Bal Vikas Public School</span><em>Admissions Open</em></div>
+                      <div className="mock-row"><i></i><i></i><i></i></div>
+                    </div>
+                    <span className="float-badge"><Globe size={13} /> Live</span>
+                  </div>
+                  <span className="tag"><span className="pulse-dot"></span>Live website</span>
+                  <h3>Bal Vikas Public School <ArrowUpRight size={18} className="arrow" /></h3>
                   <p>A complete school website with information for parents and students, live on the web.</p>
-                  <span className="go">Visit site</span>
-                </a>
-                <div className="card">
+                  <div className="chips"><span>Website</span><span>Education</span><span>Vercel</span></div>
+                  <span className="go">Visit site <ExternalLink size={14} /></span>
+                </motion.a>
+
+                {/* Project 2 */}
+                <motion.div
+                  className="card project-card"
+                  variants={cardVariant}
+                  whileHover={{ y: -8, scale: 1.015 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                >
+                  <div className="preview game">
+                    <div className="snake-board">
+                      <div className="snake"></div>
+                      <div className="food"></div>
+                      <div className="food f2"></div>
+                    </div>
+                    <span className="float-badge"><Gamepad2 size={13} /> Playable</span>
+                  </div>
                   <span className="tag">Game</span>
-                  <h3>Snake Adventure</h3>
+                  <h3>Snake Adventure <Gamepad2 size={18} className="arrow" /></h3>
                   <p>A browser snake game built as a single HTML file from a design spec.</p>
-                </div>
-              </div>
-            </section>
+                  <div className="chips"><span>HTML</span><span>Game Design</span><span>Fun Build</span></div>
+                  <span className="go soon">Coming live soon</span>
+                </motion.div>
+              </motion.div>
+            </motion.section>
 
             <section id="faq" className="rv">
               <h2 className="t">FAQ</h2>
@@ -386,7 +623,14 @@ export default function App() {
               </div>
             </section>
 
-            <section id="contact" className="contact rv">
+            <motion.section
+              id="contact"
+              className="contact rv"
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+            >
               <h2 className="t">Let's talk</h2>
               <p>
                 Got a marketing project, a design or a website to build? Message me directly on WhatsApp (+91 96717 72205), send an email, or check my code on{' '}
@@ -397,27 +641,27 @@ export default function App() {
               </p>
               <div className="btns">
                 <a
-                  className="btn primary"
+                  className="btn primary magnetic"
                   href="https://wa.me/919671772205?text=Hi%20Lakshya%2C%20I%20saw%20your%20portfolio."
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   WhatsApp me
                 </a>
-                <a className="btn" href="mailto:jaatlakshya496@gmail.com">
+                <a className="btn magnetic" href="mailto:jaatlakshya496@gmail.com">
                   Email
                 </a>
-                <a className="btn" href="https://www.linkedin.com/in/lakshya-barta-a92b1941a" target="_blank" rel="noopener noreferrer">
+                <a className="btn magnetic" href="https://www.linkedin.com/in/lakshya-barta-a92b1941a" target="_blank" rel="noopener noreferrer">
                   LinkedIn
                 </a>
-                <a className="btn" href="https://github.com/jaatlakshya496-jpg" target="_blank" rel="noopener noreferrer">
+                <a className="btn magnetic" href="https://github.com/jaatlakshya496-jpg" target="_blank" rel="noopener noreferrer">
                   GitHub
                 </a>
-                <a className="btn" href="https://www.instagram.com/lakshya____malik" target="_blank" rel="noopener noreferrer">
+                <a className="btn magnetic" href="https://www.instagram.com/lakshya____malik" target="_blank" rel="noopener noreferrer">
                   Instagram
                 </a>
               </div>
-            </section>
+            </motion.section>
           </main>
         </div>
         <footer>© Lakshya. Barta, Kaithal, Haryana.</footer>
