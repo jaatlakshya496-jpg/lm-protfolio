@@ -8,6 +8,7 @@ import {
   FAQS,
 } from '../components/Seo';
 import { SummaryCard, Journey } from '../components/Hero';
+import { FaqFull } from '../components/FaqFull';
 import { Faq } from '../components/Faq';
 import { site } from '../config/site';
 
@@ -140,7 +141,7 @@ export default function About() {
 
       <section id="faq" className="rv">
         <h2 className="t">FAQ</h2>
-        <Faq />
+        <FaqFull />
       </section>
     </>
   );
