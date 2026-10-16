@@ -17,7 +17,7 @@ import {
   Send,
 } from 'lucide-react';
 
-const WHATSAPP_NUMBER = '919671772205';
+const WHATSAPP_NUMBER = '919671772205'; // contact form v2
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
