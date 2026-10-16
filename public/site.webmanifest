@@ -1,0 +1,23 @@
+{
+  "name": "Lakshya Malik — Digital Marketer, Graphic Designer & AI Web Developer",
+  "short_name": "Lakshya",
+  "description": "Portfolio of Lakshya Malik: digital marketing, graphic design and AI web development from Kaithal, Haryana.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#000000",
+  "theme_color": "#0b0f14",
+  "lang": "en-IN",
+  "dir": "ltr",
+  "categories": ["business", "portfolio", "marketing", "productivity"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

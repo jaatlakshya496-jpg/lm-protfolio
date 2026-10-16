@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#070b18"/>
+      <stop offset="1" stop-color="#0b1226"/>
+    </linearGradient>
+    <linearGradient id="tx" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2be4a8"/>
+      <stop offset="1" stop-color="#4aa8ff"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.45" r="0.7">
+      <stop offset="0" stop-color="#2be4a8" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#2be4a8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <circle cx="1050" cy="120" r="260" fill="none" stroke="#2be4a8" stroke-opacity="0.25" stroke-width="2"/>
+  <circle cx="1050" cy="120" r="180" fill="none" stroke="#4aa8ff" stroke-opacity="0.2" stroke-width="2"/>
+  <text x="80" y="200" font-family="'Space Grotesk','Segoe UI',system-ui,sans-serif" font-size="34" font-weight="600" fill="#8fa0b5" letter-spacing="6">DIGITAL MARKETER • DESIGNER • AI WEB</text>
+  <text x="80" y="330" font-family="'Space Grotesk','Segoe UI',system-ui,sans-serif" font-size="110" font-weight="700" fill="#eaf0f7">Lakshya Malik</text>
+  <text x="80" y="410" font-family="'Space Grotesk','Segoe UI',system-ui,sans-serif" font-size="44" font-weight="700" fill="url(#tx)">Marketing that works, powered by AI</text>
+  <text x="80" y="500" font-family="'Inter','Segoe UI',system-ui,sans-serif" font-size="30" fill="#8fa0b5">Barta, Kaithal, Haryana — available for freelance</text>
+  <text x="80" y="560" font-family="'Inter','Segoe UI',system-ui,sans-serif" font-size="26" fill="#5b6b82">lakshya-portfolio.vercel.app</text>
+</svg>
