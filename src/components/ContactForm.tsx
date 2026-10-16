@@ -101,8 +101,7 @@ export function ContactForm() {
         </div>
         <p className="fnote">
           Submit karte hi aapka message WhatsApp par ban kar khul jayega — bas Send
-          dabana hai. You can also email{' '}
-          <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>.
+          dabana hai.
         </p>
       </form>
     </div>

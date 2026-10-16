@@ -42,12 +42,7 @@ export default function Contact() {
         <h1 className="t">Let's talk</h1>
         <p>
           Got a marketing project, a design or a website to build? Neeche form bharo —
-          submit karte hi aapka message seedha WhatsApp par pahunch jayega. You can
-          also email, or check my code on{' '}
-          <a href={site.social.github} target="_blank" rel="noopener noreferrer">
-            GitHub
-          </a>
-          .
+          submit karte hi aapka message seedha WhatsApp par pahunch jayega.
         </p>
 
         <div className="contact-grid">
