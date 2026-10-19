@@ -68,6 +68,7 @@ export function Header({ current }: { current: Route['name'] }) {
 }
 
 export function Footer() {
+  const isAdmin = typeof window !== 'undefined' && localStorage.getItem('adminMode') === 'true';
   return (
     <footer>
       <div className="foot-grid">

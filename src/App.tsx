@@ -188,7 +188,7 @@ export default function App() {
     }
     const adminArea = document.createElement('div');
     adminArea.style.cssText = `
-      position: fixed; bottom: 20px; right: 20px; z-index: 1000;
+      position: fixed; bottom: 20px; left: 20px; z-index: 1000;
       width: 44px; height: 44px; border-radius: 50%;
       background: var(--accent); cursor: pointer;
       display: flex; align-items: center; justify-content: center;
