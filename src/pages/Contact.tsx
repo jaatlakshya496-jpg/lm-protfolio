@@ -42,7 +42,7 @@ export default function Contact() {
         <h1 className="t">Let's talk</h1>
         <p>
           Got a marketing project, a design or a website to build? Neeche form bharo —
-          submit karte hi aapka message seedha WhatsApp par pahunch jayega.
+          submit karte hi aapka message save ho jayega. WhatsApp alag se available hai.
         </p>
 
         <div className="contact-grid">
