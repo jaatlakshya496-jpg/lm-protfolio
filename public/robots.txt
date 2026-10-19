@@ -1,7 +1,7 @@
-# robots.txt — https://lakshya-portfolio.vercel.app
+# robots.txt — https://lm-protfolio.vercel.app
 User-agent: *
 Allow: /
 
 # Block nothing important — this is a public portfolio.
 
-Sitemap: https://lakshya-portfolio.vercel.app/sitemap.xml
+Sitemap: https://lm-protfolio.vercel.app/sitemap.xml

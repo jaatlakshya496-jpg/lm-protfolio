@@ -6,7 +6,7 @@ A modern, dark-themed portfolio website built with React, Vite, and Tailwind CSS
 
 ## Live Demo
 
-- **Website**: https://lakshya-portfolio.vercel.app
+- **Website**: https://lm-protfolio.vercel.app
 - **GitHub**: https://github.com/jaatlakshya496-jpg/lm-protfolio
 
 ## Sections

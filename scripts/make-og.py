@@ -77,7 +77,7 @@ d.text((82, 350), "Marketing that works, powered by AI", font=f_tag, fill=ACCENT
 
 # sub + domain
 d.text((82, 440), "Barta, Kaithal, Haryana  —  available for freelance", font=f_sub, fill=MUTED)
-d.text((82, 500), "lakshya-portfolio.vercel.app", font=f_dom, fill=DIM)
+d.text((82, 500), "lm-protfolio.vercel.app", font=f_dom, fill=DIM)
 
 # accent underline bar
 d.rounded_rectangle([82, 330, 82 + 520, 336], radius=3, fill=ACCENT)

@@ -4,7 +4,7 @@
  * sitemap.xml, robots.txt, canonical tags, OG tags, JSON-LD, analytics.
  */
 
-export const SITE_URL = 'https://lakshya-portfolio.vercel.app';
+export const SITE_URL = 'https://lm-protfolio.vercel.app';
 
 export const site = {
   url: SITE_URL,
