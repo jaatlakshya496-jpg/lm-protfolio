@@ -172,11 +172,14 @@ export default function App() {
   useEffect(() => {
     const adminArea = document.createElement('div');
     adminArea.style.cssText = `
-      position: fixed; top: 20px; right: 20px; z-index: 1000;
-      width: 40px; height: 40px; border-radius: 50%;
+      position: fixed; bottom: 20px; right: 20px; z-index: 1000;
+      width: 44px; height: 44px; border-radius: 50%;
       background: var(--accent); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; color: #04241a; font-weight: bold;
     `;
     adminArea.setAttribute('aria-label', 'Admin panel toggle');
+    adminArea.textContent = '⚙';
     adminArea.addEventListener('click', () => setShowAdmin(true));
     document.body.appendChild(adminArea);
     return () => {
@@ -216,8 +219,19 @@ export default function App() {
       <BackToTop visible={showTop} />
 
       {/* Admin Panel */}
-      {adminLoggedIn && showAdmin && <AdminDashboard />}
-      {!adminLoggedIn && showAdmin && <AdminLogin />}
+      {showAdmin && (
+        <div className="fixed inset-0 z-[1001] bg-black/80 overflow-auto p-4">
+          <div className="max-w-3xl mx-auto">
+            <button
+              onClick={() => setShowAdmin(false)}
+              className="mb-4 bg-[dc2625] text-white px-4 py-2 rounded"
+            >
+              Close
+            </button>
+            {adminLoggedIn ? <AdminDashboard /> : <AdminLogin onLogin={handleLogin} />}
+          </div>
+        </div>
+      )}
 
       {/* Skip link for accessibility */}
       <a href="#top" className="skip-link">

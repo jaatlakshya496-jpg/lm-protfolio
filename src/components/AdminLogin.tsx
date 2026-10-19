@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 const ADMIN_PASSWORD = 'lakshya2024';
 
-export function AdminLogin() {
+export function AdminLogin({ onLogin }: { onLogin?: () => void }) {
   const [password, setPassword] = useState('');
   const [success, setSuccess] = useState(false);
 
@@ -19,6 +19,7 @@ export function AdminLogin() {
     if (password === ADMIN_PASSWORD) {
       setSuccess(true);
       localStorage.setItem('adminLoggedIn', 'true');
+      onLogin?.();
     } else {
       alert('Sahi password daal.');
     }
