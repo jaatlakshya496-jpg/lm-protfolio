@@ -89,6 +89,14 @@ export function Footer() {
         </div>
       </div>
       <span className="copy">© {new Date().getFullYear()} Lakshya Malik. All rights reserved.</span>
+      <div style={{ marginTop: 8, textAlign: 'center' }}>
+        <button
+          onClick={() => window.dispatchEvent(new Event('open-admin'))}
+          style={{ background: 'none', border: 'none', color: '#2be4a8', cursor: 'pointer', fontSize: 12, opacity: 0.5 }}
+        >
+          Admin
+        </button>
+      </div>
     </footer>
   );
 }

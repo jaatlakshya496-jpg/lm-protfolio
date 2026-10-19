@@ -149,6 +149,13 @@ export default function App() {
 
   // Track back-to-top visibility.
   const [showTop, setShowTop] = useState(false);
+
+  // Allow footer admin link to open admin panel.
+  useEffect(() => {
+    const open = () => setShowAdmin(true);
+    window.addEventListener('open-admin', open);
+    return () => window.removeEventListener('open-admin', open);
+  }, []);
   useEffect(() => {
     const onScroll = () => setShowTop(window.scrollY > 400);
     onScroll();
