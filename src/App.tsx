@@ -174,8 +174,17 @@ export default function App() {
     if (params.get('admin') === '1') {
       localStorage.setItem('adminMode', 'true');
     }
+    // Secret keyboard shortcut for owner: Ctrl+Shift+A enables admin mode
+    const onKey = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+        localStorage.setItem('adminMode', 'true');
+        window.location.reload();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+
     if (localStorage.getItem('adminMode') !== 'true') {
-      return;
+      return () => window.removeEventListener('keydown', onKey);
     }
     const adminArea = document.createElement('div');
     adminArea.style.cssText = `
@@ -190,6 +199,7 @@ export default function App() {
     adminArea.addEventListener('click', () => setShowAdmin(true));
     document.body.appendChild(adminArea);
     return () => {
+      window.removeEventListener('keydown', onKey);
       document.body.removeChild(adminArea);
       return undefined;
     };
