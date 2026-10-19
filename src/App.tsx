@@ -168,8 +168,15 @@ export default function App() {
     setShowAdmin(false);
   };
 
-  // Admin toggle via pointer move to top-right corner
+  // Admin toggle only for owner (hidden from public visitors)
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('admin') === '1') {
+      localStorage.setItem('adminMode', 'true');
+    }
+    if (localStorage.getItem('adminMode') !== 'true') {
+      return;
+    }
     const adminArea = document.createElement('div');
     adminArea.style.cssText = `
       position: fixed; bottom: 20px; right: 20px; z-index: 1000;
