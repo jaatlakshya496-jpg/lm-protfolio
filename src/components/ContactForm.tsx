@@ -26,18 +26,19 @@ export function ContactForm() {
       form.message.trim(),
     ].filter((l): l is string => l !== null);
 
-    const url = `https://wa.me/${site.contact.phoneRaw}?text=${encodeURIComponent(
-      lines.join('\n')
-    )}`;
-
-    window.open(url, '_blank', 'noopener,noreferrer');
     setSent(true);
     window.setTimeout(() => setSent(false), 4000);
     setForm({ name: '', email: '', message: '' });
     
     // Save to localStorage for admin panel
-    const stored = localStorage.getItem(STORAGE_KEY);
-    const current = stored ? JSON.parse(stored) : [];
+    let current: any[] = [];
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      current = stored ? JSON.parse(stored) : [];
+      if (!Array.isArray(current)) current = [];
+    } catch {
+      current = [];
+    }
     current.push({
       name: form.name.trim(),
       email: form.email?.trim() || '',
@@ -95,7 +96,7 @@ export function ContactForm() {
           </button>
           {sent && (
             <span className="fsent" role="status">
-              Opening WhatsApp with your message...
+              Message save ho gaya. Main jald reply karunga.
             </span>
           )}
         </div>

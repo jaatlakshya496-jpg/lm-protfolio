@@ -94,7 +94,7 @@ export const site = {
   },
 
   ogImage: {
-    url: `${SITE_URL}/og-image.svg`,
+    url: `${SITE_URL}/og-image.png`,
     width: 1200,
     height: 630,
     alt: 'Lakshya Malik — Digital Marketer, Graphic Designer & AI Web Developer from Kaithal, Haryana',
