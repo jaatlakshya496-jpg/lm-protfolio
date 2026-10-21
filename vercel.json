@@ -1,9 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": false,
-"build": { "env": { "VITE_CONFIG_NATIVE_IGNORE_WARNING": "true" } },
+  "build": { "env": { "VITE_CONFIG_NATIVE_IGNORE_WARNING": "true" } },
   "trailingSlash": false,
-  "rewrites": [{ "source": "/((?!.*\\\\.).*)", "destination": "/index.html" }],
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
   "headers": [
     {
       "source": "/(.*)\\.(?:js|css|svg|png|jpg|jpeg|webp|woff2?)",
