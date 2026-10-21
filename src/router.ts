@@ -11,6 +11,7 @@ export type Route =
   | { name: 'about' }
   | { name: 'projects' }
   | { name: 'contact' }
+  | { name: 'admin' }
   | { name: 'notfound' };
 
 const ROUTES: Record<string, Route['name']> = {
@@ -18,6 +19,7 @@ const ROUTES: Record<string, Route['name']> = {
   '/about': 'about',
   '/projects': 'projects',
   '/contact': 'contact',
+  '/admin': 'admin',
 };
 
 export function normalizePath(pathname: string): Route {

@@ -3,8 +3,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Projects from './pages/Projects';
 import Contact from './pages/Contact';
-import { AdminLogin } from './components/AdminLogin';
-import { AdminDashboard } from './components/AdminDashboard';
+import { AdminPage } from './components/AdminPage';
 import { Background, ScrollBar } from './components/Background';
 import { Header, Footer, BackToTop } from './components/Chrome';
 import { Seo } from './components/Seo';
@@ -53,7 +52,6 @@ function NotFound() {
 export default function App() {
   const { route, navigate } = useRoute();
   const [adminLoggedIn, setAdminLoggedIn] = useState(false);
-  const [showAdmin, setShowAdmin] = useState(false);
 
   useEffect(() => {
     // Check if already logged in via localStorage
@@ -150,12 +148,6 @@ export default function App() {
   // Track back-to-top visibility.
   const [showTop, setShowTop] = useState(false);
 
-  // Allow footer admin link to open admin panel.
-  useEffect(() => {
-    const open = () => setShowAdmin(true);
-    window.addEventListener('open-admin', open);
-    return () => window.removeEventListener('open-admin', open);
-  }, []);
   useEffect(() => {
     const onScroll = () => setShowTop(window.scrollY > 400);
     onScroll();
@@ -166,13 +158,13 @@ export default function App() {
   const handleLogin = () => {
     setAdminLoggedIn(true);
     localStorage.setItem('adminLoggedIn', 'true');
-    setShowAdmin(false);
   };
 
   const handleLogout = () => {
     setAdminLoggedIn(false);
     localStorage.removeItem('adminLoggedIn');
-    setShowAdmin(false);
+    // Logout ke baad site par wapas bhej do (panel URL-driven hai).
+    if (route.name === 'admin') navigate(hrefFor('home'));
   };
 
   // Admin toggle only for owner (hidden from public visitors)
@@ -201,16 +193,16 @@ export default function App() {
       display: flex; align-items: center; justify-content: center;
       font-size: 20px; color: #04241a; font-weight: bold;
     `;
-    adminArea.setAttribute('aria-label', 'Admin panel toggle');
+    adminArea.setAttribute('aria-label', 'Open admin panel');
     adminArea.textContent = '⚙';
-    adminArea.addEventListener('click', () => setShowAdmin(true));
+    adminArea.addEventListener('click', () => navigate('/admin'));
     document.body.appendChild(adminArea);
     return () => {
       window.removeEventListener('keydown', onKey);
       document.body.removeChild(adminArea);
       return undefined;
     };
-  }, []);
+  }, [navigate]);
 
   return (
     <>
@@ -230,6 +222,14 @@ export default function App() {
                   return <Projects />;
                 case 'contact':
                   return <Contact />;
+                case 'admin':
+                  return (
+                    <AdminPage
+                      loggedIn={adminLoggedIn}
+                      onLogin={handleLogin}
+                      onLogout={handleLogout}
+                    />
+                  );
                 default:
                   return <NotFound />;
               }
@@ -241,21 +241,6 @@ export default function App() {
         <Footer />
       </div>
       <BackToTop visible={showTop} />
-
-      {/* Admin Panel */}
-      {showAdmin && (
-        <div className="fixed inset-0 z-[1001] bg-black/80 overflow-auto p-4">
-          <div className="max-w-3xl mx-auto">
-            <button
-              onClick={() => setShowAdmin(false)}
-              className="mb-4 bg-[dc2625] text-white px-4 py-2 rounded"
-            >
-              Close
-            </button>
-            {adminLoggedIn ? <AdminDashboard /> : <AdminLogin onLogin={handleLogin} />}
-          </div>
-        </div>
-      )}
 
       {/* Skip link for accessibility */}
       <a href="#top" className="skip-link">

@@ -68,7 +68,6 @@ export function Header({ current }: { current: Route['name'] }) {
 }
 
 export function Footer() {
-  const isAdmin = typeof window !== 'undefined' && localStorage.getItem('adminMode') === 'true';
   return (
     <footer>
       <div className="foot-grid">
@@ -90,12 +89,12 @@ export function Footer() {
       </div>
       <span className="copy">© {new Date().getFullYear()} Lakshya Malik. All rights reserved.</span>
       <div style={{ marginTop: 8, textAlign: 'center' }}>
-        <button
-          onClick={() => window.dispatchEvent(new Event('open-admin'))}
-          style={{ background: 'none', border: 'none', color: '#2be4a8', cursor: 'pointer', fontSize: 12, opacity: 0.5 }}
+        <a
+          href="/admin"
+          style={{ color: '#2be4a8', fontSize: 12, opacity: 0.5, textDecoration: 'none' }}
         >
           Admin
-        </button>
+        </a>
       </div>
     </footer>
   );

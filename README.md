@@ -47,11 +47,16 @@ A modern, dark-themed portfolio website built with React, Vite, and Tailwind CSS
 - Works on both desktop and mobile
 
 ### How to Use
-1. Visit the website
-2. Look for the small accent circle in the top-right corner (admin toggle)
-3. Click it and enter password: `lakshya2024`
-4. Admin dashboard appears showing all messages
-5. Messages are also saved automatically when visitors submit the contact form
+1. Visit `https://lm-protfolio.vercel.app/admin` directly (or click the small **Admin** link in the footer)
+2. Enter password: `lakshya2024`
+3. Admin dashboard appears showing all messages, FAQs and projects
+4. The panel is a real route (`/admin`), so it stays open even after refresh
+5. Messages are saved automatically when visitors submit the contact form
+
+### Owner shortcuts
+- `?admin=1` (e.g. `/?admin=1`) or **Ctrl+Shift+A** enables admin mode
+- Admin mode shows a floating ⚙ button (bottom-left) that jumps to `/admin`
+- `/admin` is `noindex` — search engines won't list it
 
 ### Message Storage
 - All contact form messages are saved to browser's `localStorage`
