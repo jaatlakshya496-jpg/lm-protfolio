@@ -91,19 +91,56 @@ export default function App() {
 
   // Re-apply reveal animation observers on every route change.
   useEffect(() => {
+    const reveal = (el: Element) => el.classList.add('in');
+
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('in');
+            reveal(entry.target);
             io.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.01, rootMargin: '300px 0px 0px 0px' }
     );
-    document.querySelectorAll('.rv, #path').forEach((n) => io.observe(n));
-    return () => io.disconnect();
+
+    const nodes = Array.from(document.querySelectorAll('.rv, #path'));
+    nodes.forEach((n) => io.observe(n));
+
+    // Crawlers (Googlebot etc.) do not scroll. Reveal everything for them so
+    // no content is ever hidden from search engines.
+    const isBot = /bot|crawler|spider|slurp|bingpreview|facebookexternalhit/i.test(
+      navigator.userAgent
+    );
+    if (isBot) {
+      nodes.forEach((n) => reveal(n));
+      return () => io.disconnect();
+    }
+
+    // Safety net: anything already inside the viewport reveals immediately,
+    // so content is never stuck invisible (which used to blank the page).
+    const inViewport = () =>
+      nodes.forEach((n) => {
+        const r = n.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) reveal(n);
+      });
+    inViewport();
+    const raf = window.requestAnimationFrame(inViewport);
+    const t = window.setTimeout(inViewport, 400);
+    // Scroll fallback: if IntersectionObserver misses an element, this reveals
+    // it as soon as it enters the viewport. Nothing ever stays invisible.
+    const onScroll = () => inViewport();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+
+    return () => {
+      io.disconnect();
+      window.cancelAnimationFrame(raf);
+      window.clearTimeout(t);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
   }, [route.name]);
 
   // Pointer effects (spotlight + 3D card tilt).

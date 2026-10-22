@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { hrefFor, type Route } from '../router';
+import { site } from '../config/site';
 
 const NAV: Array<{ name: Route['name']; label: string }> = [
   { name: 'home', label: 'Home' },
@@ -34,7 +35,8 @@ export function Header({ current }: { current: Route['name'] }) {
   return (
     <header className={scrolled ? 'scrolled' : ''}>
       <a className="logo" href="/" aria-label="Lakshya Malik — home">
-        Lakshya<i>.</i>
+        {site.name}
+        <i>.</i>
       </a>
       <button
         type="button"

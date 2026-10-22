@@ -1,10 +1,21 @@
 ﻿<!doctype html>
-<html lang="en" class="js">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#0b0f14" />
+    <!-- Marks that JS is running so scroll-reveal styles apply. Added as early
+         as possible (inline) to avoid a flash of hidden content. If the app
+         bundle fails to load, a 4s timer removes it and the page stays visible. -->
+    <script>
+      document.documentElement.classList.add('js');
+      window.setTimeout(function () {
+        if (!document.querySelector('#root > *')) {
+          document.documentElement.classList.remove('js');
+        }
+      }, 4000);
+    </script>
     <title>Lakshya Malik — Digital Marketer, Graphic Designer & AI Web Developer in Kaithal, Haryana</title>
     <meta
       name="description"
