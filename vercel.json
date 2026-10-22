@@ -3,10 +3,9 @@
   "cleanUrls": false,
   "build": { "env": { "VITE_CONFIG_NATIVE_IGNORE_WARNING": "true" } },
   "trailingSlash": false,
-  "rewrites": [
-    { "source": "/sitemap.xml", "destination": "/sitemap.xml" },
-    { "source": "/robots.txt", "destination": "/robots.txt" },
-    { "source": "/(.*)", "destination": "/index.html" }
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ],
   "headers": [
     {
