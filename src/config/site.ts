@@ -8,7 +8,7 @@ export const SITE_URL = 'https://lm-protfolio.vercel.app';
 
 export const site = {
   url: SITE_URL,
-  name: 'Lakshya',
+  name: 'lakshya__malik',
   fullName: 'Lakshya Malik',
   role: 'Digital Marketer, Graphic Designer & AI Web Developer',
   tagline: 'AI-powered marketing that grows businesses',
