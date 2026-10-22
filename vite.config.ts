@@ -9,6 +9,8 @@ export default defineConfig(() => {
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
+        'motion/react': path.resolve(__dirname, 'src/shims/motion.tsx'),
+        'motion': path.resolve(__dirname, 'src/shims/motion.tsx'),
       },
     },
     server: {
