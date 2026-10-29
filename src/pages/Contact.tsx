@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Mail, Phone, MapPin, MessageCircle } from 'lucide-react';
+import { Mail, Phone, MapPin } from 'lucide-react';
 import {
   Seo,
   personLd,
@@ -14,7 +14,7 @@ export default function Contact() {
     <>
       <Seo
         title="Contact Lakshya Malik — Hire a Digital Marketer in Kaithal, Haryana"
-        description="Contact Lakshya Malik for digital marketing, SEO, social media, Meta ads, graphic design and AI web development. WhatsApp +91 96717 72205 or email jaatlakshya496@gmail.com."
+        description="Contact Lakshya Malik for digital marketing, SEO, social media, Meta ads, graphic design and AI web development."
         path="/contact"
         jsonLd={[
           personLd,
@@ -41,23 +41,14 @@ export default function Contact() {
       >
         <h1 className="t">Let's talk</h1>
         <p>
-          Got a marketing project, a design or a website to build? Neeche form bharo —
-          submit karte hi aapka message save ho jayega. WhatsApp alag se available hai.
+          Got a marketing project, a design or a website to build? Neeche form bharo
+          aur apna email ya phone number select karke submit karo.
         </p>
 
         <div className="contact-grid">
           <ContactForm />
 
           <aside className="cinfo" aria-label="Contact details">
-            <div className="s-item">
-              <MessageCircle size={17} />
-              <div>
-                <b>WhatsApp</b>
-                <a href={site.social.whatsapp} target="_blank" rel="noopener noreferrer">
-                  {site.contact.phone}
-                </a>
-              </div>
-            </div>
             <div className="s-item">
               <Mail size={17} />
               <div>

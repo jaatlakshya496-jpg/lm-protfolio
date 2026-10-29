@@ -168,8 +168,8 @@ export function SummaryCard() {
       <p>
         Currently training at <b>Zedking Institute, Kaithal</b> and open for
         freelance work. My style is simple: clear design, honest marketing, and
-        quick delivery. I also love game design — I built a browser snake game
-        just for fun.
+        quick delivery. I also enjoy game design — explore my live 2D bike stunt
+        game.
       </p>
       <div className="summary-grid">
         <div className="s-item">

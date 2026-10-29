@@ -78,11 +78,11 @@ export const site = {
       tags: ['Website', 'Education', 'Vercel'],
     },
     {
-      name: 'Snake Adventure',
-      url: '',
+      name: 'Malik Bike Stunt 2D',
+      url: 'https://lakshya-malik.vercel.app/',
       description:
-        'A browser snake game built as a single HTML file from a design spec — a personal game-design and front-end build.',
-      tags: ['HTML', 'Game Design', 'Fun Build'],
+        'A live 2D side-scrolling bike stunt game with flips, wheelies, upgrades and stunt tracks.',
+      tags: ['Game', '2D Stunts', 'Live'],
     },
   ],
 

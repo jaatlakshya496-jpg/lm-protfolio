@@ -18,7 +18,7 @@ const staggerParent = {
 };
 
 export function ProjectGrid() {
-  const [school, snake] = site.projects;
+  const [school, bikeGame] = site.projects;
 
   return (
     <motion.div
@@ -87,30 +87,43 @@ export function ProjectGrid() {
         variants={cardVariant}
         whileHover={{ y: -8, scale: 1.015 }}
         transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-        href="/contact"
-        aria-label={`${snake.name} — ask about this project`}
+        href={bikeGame.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${bikeGame.name} — play the live game in a new tab`}
       >
-        <div className="preview game">
-          <div className="snake-board">
-            <div className="snake" />
-            <div className="food" />
-            <div className="food f2" />
+        <div className="preview bike-game">
+          <div className="bike-scene" aria-hidden="true">
+            <span className="bike-sun" />
+            <span className="bike-ramp" />
+            <div className="bike-rider">
+              <i />
+              <b />
+            </div>
+            <span className="bike-track" />
+            <span className="bike-title">MALIK BIKE STUNT 2D</span>
+            <span className="bike-subtitle">FLIP · RIDE · STUNT</span>
           </div>
           <span className="float-badge">
-            <Gamepad2 size={13} /> Playable
+            <Gamepad2 size={13} /> Live game
           </span>
         </div>
-        <span className="tag">Game</span>
+        <span className="tag">
+          <span className="pulse-dot" />
+          Live game
+        </span>
         <h3>
-          Snake Adventure <Gamepad2 size={18} className="arrow" />
+          {bikeGame.name} <Gamepad2 size={18} className="arrow" />
         </h3>
-        <p>A browser snake game built as a single HTML file from a design spec.</p>
+        <p>{bikeGame.description}</p>
         <div className="chips">
-          <span>HTML</span>
-          <span>Game Design</span>
-          <span>Fun Build</span>
+          {bikeGame.tags.map((tag) => (
+            <span key={tag}>{tag}</span>
+          ))}
         </div>
-        <span className="go">Ask me about it</span>
+        <span className="go">
+          Play live game <ExternalLink size={14} />
+        </span>
       </motion.a>
     </motion.div>
   );

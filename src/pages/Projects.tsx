@@ -12,7 +12,7 @@ import { site } from '../config/site';
 
 const STACK = [
   { k: 'Bal Vikas Public School', v: 'Website • React, Tailwind CSS, Vercel' },
-  { k: 'Snake Adventure', v: 'Game • HTML, CSS, JavaScript' },
+  { k: 'Malik Bike Stunt 2D', v: 'Live 2D side-scrolling stunt game' },
   { k: 'Marketing Engine', v: 'SEO • Social Media • Meta Ads' },
   { k: 'Brand Kit', v: 'Logo • Social Creatives • Canva' },
 ];
@@ -22,7 +22,7 @@ export default function Projects() {
     <>
       <Seo
         title="Projects — Websites, Design & Marketing Work by Lakshya Malik"
-        description="Selected work by Lakshya Malik, digital marketer and AI web developer in Kaithal, Haryana: a live school website, a browser game, branding and full marketing campaigns."
+        description="Selected work by Lakshya Malik, digital marketer and AI web developer in Kaithal, Haryana: a live school website, Malik Bike Stunt 2D, branding and marketing campaigns."
         path="/projects"
         jsonLd={[
           personLd,
@@ -105,8 +105,8 @@ export default function Projects() {
           <a className="btn magnetic" href="https://bvps-school.vercel.app" target="_blank" rel="noopener noreferrer">
             <Globe size={16} /> See live site
           </a>
-          <a className="btn magnetic" href="/contact">
-            <Gamepad2 size={16} /> Ask about the game
+          <a className="btn magnetic" href={site.projects[1].url} target="_blank" rel="noopener noreferrer">
+            <Gamepad2 size={16} /> Play live game
           </a>
         </div>
       </motion.section>

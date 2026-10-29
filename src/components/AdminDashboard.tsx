@@ -81,7 +81,8 @@ export function AdminDashboard() {
               <div className="flex justify-between items-start">
                 <div>
                   <p className="font-medium text-white">Name: {msg.name}</p>
-                  <p className="text-[8fa0b5] small">Email: {msg.email}</p>
+                  {msg.email && <p className="text-[8fa0b5] small">Email: {msg.email}</p>}
+                  {msg.phone && <p className="text-[8fa0b5] small">Phone: {msg.phone}</p>}
                   <p className="text-[8fa0b5] small">Date: {msg.date}</p>
                 </div>
                 <button onClick={() => deleteMsg(i)} className="text-[dc2625] text-sm hover:opacity-80">Delete</button>
