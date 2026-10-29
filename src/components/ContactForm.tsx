@@ -149,11 +149,15 @@ export function ContactForm() {
           </button>
           {sent && (
             <span className="fsent" role="status">
-              Message save ho gaya. Main jald reply karunga.
+              Details is browser mein save ho gayi.
             </span>
           )}
         </div>
         {error && <p className="ferror" role="alert">{error}</p>}
+        <p className="fnote">
+          Note: Submit se details sirf isi browser mein save hoti hain; email ya
+          phone par automatically nahi bheji jaati.
+        </p>
       </form>
     </div>
   );
