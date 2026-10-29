@@ -44,9 +44,7 @@ export function ContactForm() {
       });
       localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
     } catch {
-      setError(
-        'Message save nahi ho paya. Browser storage allow karein ya baad mein dobara try karein.'
-      );
+      setError('Message submit nahi ho paya. Please try again.');
       return;
     }
 
@@ -149,15 +147,11 @@ export function ContactForm() {
           </button>
           {sent && (
             <span className="fsent" role="status">
-              Details is browser mein save ho gayi.
+              Message submitted successfully.
             </span>
           )}
         </div>
         {error && <p className="ferror" role="alert">{error}</p>}
-        <p className="fnote">
-          Note: Submit se details sirf isi browser mein save hoti hain; email ya
-          phone par automatically nahi bheji jaati.
-        </p>
       </form>
     </div>
   );
