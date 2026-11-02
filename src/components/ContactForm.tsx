@@ -4,6 +4,16 @@ import { site } from '../config/site';
 
 const STORAGE_KEY = 'portfolio_messages';
 
+function readMessages(): Array<Record<string, string>> {
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
 export function ContactForm() {
   const [form, setForm] = useState({
     name: '',
@@ -28,21 +38,38 @@ export function ContactForm() {
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      const current: unknown = stored ? JSON.parse(stored) : [];
-      if (!Array.isArray(current)) {
-        throw new Error('Saved messages are not in the expected format.');
-      }
+    const name = form.name.trim();
+    const message = form.message.trim();
+    const contactValue = form.contactValue.trim();
 
-      current.push({
-        name: form.name.trim(),
-        email: form.contactMethod === 'email' ? form.contactValue.trim() : '',
-        phone: form.contactMethod === 'phone' ? form.contactValue.trim() : '',
-        message: form.message.trim(),
-        date: new Date().toLocaleString(),
-      });
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
+    if (!name || !message || !form.contactMethod || !contactValue) {
+      setError('Please complete all fields before submitting the form.');
+      return;
+    }
+
+    if (form.contactMethod === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactValue)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    if (form.contactMethod === 'phone' && !/^\d{10}$/.test(contactValue)) {
+      setError('Please enter a valid 10-digit phone number.');
+      return;
+    }
+
+    try {
+      const current = readMessages();
+      const next = [
+        ...current,
+        {
+          name,
+          email: form.contactMethod === 'email' ? contactValue : '',
+          phone: form.contactMethod === 'phone' ? contactValue : '',
+          message,
+          date: new Date().toLocaleString(),
+        },
+      ];
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
     } catch {
       setError('Message submit nahi ho paya. Please try again.');
       return;

@@ -39,11 +39,8 @@ export default function Contact() {
         transition={{ duration: 0.7 }}
         style={{ paddingTop: 24 }}
       >
-        <h1 className="t">Let's talk</h1>
-        <p>
-          Got a marketing project, a design or a website to build? Neeche form bharo
-          aur apna email ya phone number select karke submit karo.
-        </p>
+        <h1 className="t">Contact</h1>
+        <p>Get in touch for your project.</p>
 
         <div className="contact-grid">
           <ContactForm />

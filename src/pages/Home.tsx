@@ -3,6 +3,7 @@ import { Seo, personLd, websiteLd, professionalServiceLd, faqLd, FAQS } from '..
 import { Hero, Marquee, SummaryCard, Journey } from '../components/Hero';
 import { ProjectGrid } from '../components/ProjectGrid';
 import { Faq } from '../components/Faq';
+import { ContactForm, SocialButtons } from '../components/ContactForm';
 import { site } from '../config/site';
 
 export default function Home() {
@@ -72,16 +73,39 @@ export default function Home() {
       </section>
 
       <section id="contact" className="contact rv">
-        <h2 className="t">Let's talk</h2>
-        <p>
-          Got a marketing project, a design or a website to build? Send a message and
-          we can start this week.
-        </p>
-        <p>
-          <a className="btn primary magnetic" href="/contact">
-            Contact me
-          </a>
-        </p>
+        <h2 className="t">Contact</h2>
+        <p>Get in touch for your project.</p>
+        <div className="contact-grid">
+          <ContactForm />
+          <aside className="cinfo" aria-label="Contact details">
+            <div className="s-item">
+              <div>
+                <b>Email</b>
+                <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+              </div>
+            </div>
+            <div className="s-item">
+              <div>
+                <b>Phone</b>
+                <a href={`tel:${site.contact.phone}`}>{site.contact.phone}</a>
+              </div>
+            </div>
+            <div className="s-item">
+              <div>
+                <b>Based in</b>
+                <span>{site.location.address}</span>
+              </div>
+            </div>
+            <div className="s-item">
+              <span className="live-dot" />
+              <div>
+                <b>Availability</b>
+                <span>Available for freelance projects</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+        <SocialButtons />
       </section>
     </>
   );

@@ -9,7 +9,7 @@ export function AdminLogin({ onLogin }: { onLogin?: () => void }) {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (password === ADMIN_PASSWORD) {
-      localStorage.setItem('adminLoggedIn', 'true');
+      window.sessionStorage.setItem('adminLoggedIn', 'true');
       setError('');
       onLogin?.();
     } else {

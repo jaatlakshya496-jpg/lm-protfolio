@@ -5,6 +5,16 @@ const MSG_KEY = 'portfolio_messages';
 const FAQ_KEY = 'portfolio_faqs';
 const PROJ_KEY = 'portfolio_projects';
 
+function readJsonArray<T>(key: string, fallback: T[]) {
+  try {
+    const raw = window.localStorage.getItem(key);
+    const parsed = raw ? JSON.parse(raw) : fallback;
+    return Array.isArray(parsed) ? parsed : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export function AdminDashboard() {
   const [tab, setTab] = useState<'messages' | 'faqs' | 'projects'>('messages');
   const [messages, setMessages] = useState<any[]>([]);
@@ -14,44 +24,44 @@ export function AdminDashboard() {
   const [newProj, setNewProj] = useState({ name: '', url: '', desc: '' });
 
   const reload = () => {
-    try { setMessages(JSON.parse(localStorage.getItem(MSG_KEY) || '[]')); } catch { setMessages([]); }
-    try { setFaqs(JSON.parse(localStorage.getItem(FAQ_KEY) || JSON.stringify(FAQS))); } catch { setFaqs(FAQS); }
-    try { setProjects(JSON.parse(localStorage.getItem(PROJ_KEY) || '[]')); } catch { setProjects([]); }
+    setMessages(readJsonArray(MSG_KEY, []));
+    setFaqs(readJsonArray(FAQ_KEY, FAQS));
+    setProjects(readJsonArray(PROJ_KEY, []));
   };
 
   useEffect(() => { reload(); }, []);
 
   const deleteMsg = (i: number) => {
     const next = messages.filter((_, idx) => idx !== i);
-    localStorage.setItem(MSG_KEY, JSON.stringify(next));
+    window.localStorage.setItem(MSG_KEY, JSON.stringify(next));
     setMessages(next);
   };
 
   const addFaq = () => {
     if (!newFaq.q.trim() || !newFaq.a.trim()) return;
     const next = [...faqs, { q: newFaq.q.trim(), a: newFaq.a.trim() }];
-    localStorage.setItem(FAQ_KEY, JSON.stringify(next));
+    window.localStorage.setItem(FAQ_KEY, JSON.stringify(next));
     setFaqs(next);
     setNewFaq({ q: '', a: '' });
   };
 
   const deleteFaq = (i: number) => {
     const next = faqs.filter((_, idx) => idx !== i);
-    localStorage.setItem(FAQ_KEY, JSON.stringify(next));
+    window.localStorage.setItem(FAQ_KEY, JSON.stringify(next));
     setFaqs(next);
   };
 
   const addProj = () => {
     if (!newProj.name.trim()) return;
     const next = [...projects, { name: newProj.name.trim(), url: newProj.url.trim(), desc: newProj.desc.trim() }];
-    localStorage.setItem(PROJ_KEY, JSON.stringify(next));
+    window.localStorage.setItem(PROJ_KEY, JSON.stringify(next));
     setProjects(next);
     setNewProj({ name: '', url: '', desc: '' });
   };
 
   const deleteProj = (i: number) => {
     const next = projects.filter((_, idx) => idx !== i);
-    localStorage.setItem(PROJ_KEY, JSON.stringify(next));
+    window.localStorage.setItem(PROJ_KEY, JSON.stringify(next));
     setProjects(next);
   };
 

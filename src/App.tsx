@@ -5,7 +5,7 @@ import Projects from './pages/Projects';
 import Contact from './pages/Contact';
 import { AdminPage } from './components/AdminPage';
 import { Background, ScrollBar } from './components/Background';
-import { Header, Footer, BackToTop } from './components/Chrome';
+import { Header, Footer } from './components/Chrome';
 import { Seo } from './components/Seo';
 import { useRoute, useLinkInterception, hrefFor, normalizePath, isKnownRoute, type Route } from './router';
 import { site } from './config/site';
@@ -54,8 +54,8 @@ export default function App() {
   const [adminLoggedIn, setAdminLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Check if already logged in via localStorage
-    const stored = localStorage.getItem('adminLoggedIn');
+    // Keep admin state in session storage so public visitors do not inherit an owner-only view.
+    const stored = window.sessionStorage.getItem('adminLoggedIn');
     if (stored === 'true') {
       setAdminLoggedIn(true);
     }
@@ -194,12 +194,12 @@ export default function App() {
 
   const handleLogin = () => {
     setAdminLoggedIn(true);
-    localStorage.setItem('adminLoggedIn', 'true');
+    window.sessionStorage.setItem('adminLoggedIn', 'true');
   };
 
   const handleLogout = () => {
     setAdminLoggedIn(false);
-    localStorage.removeItem('adminLoggedIn');
+    window.sessionStorage.removeItem('adminLoggedIn');
     // Logout ke baad site par wapas bhej do (panel URL-driven hai).
     if (route.name === 'admin') navigate(hrefFor('home'));
   };
@@ -208,18 +208,18 @@ export default function App() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('admin') === '1') {
-      localStorage.setItem('adminMode', 'true');
+      window.sessionStorage.setItem('adminMode', 'true');
     }
     // Secret keyboard shortcut for owner: Ctrl+Shift+A enables admin mode
     const onKey = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
-        localStorage.setItem('adminMode', 'true');
+        window.sessionStorage.setItem('adminMode', 'true');
         window.location.reload();
       }
     };
     window.addEventListener('keydown', onKey);
 
-    if (localStorage.getItem('adminMode') !== 'true') {
+    if (window.sessionStorage.getItem('adminMode') !== 'true') {
       return () => window.removeEventListener('keydown', onKey);
     }
     const adminArea = document.createElement('div');
@@ -277,7 +277,6 @@ export default function App() {
         </main>
         <Footer />
       </div>
-      <BackToTop visible={showTop} />
 
       {/* Skip link for accessibility */}
       <a href="#top" className="skip-link">
