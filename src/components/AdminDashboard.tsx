@@ -123,7 +123,7 @@ export function AdminDashboard() {
   const tabBtn = (t: typeof tab, label: string) => (
     <button
       onClick={() => setTab(t)}
-      className={`px-4 py-2 rounded ${tab === t ? 'bg-[2be4a8] text-[04241a]' : 'bg-[0f1420] text-white'}`}
+      className={`px-4 py-2 rounded ${tab === t ? 'bg-[#2be4a8] text-[#04241a]' : 'bg-[#0f1420] text-white'}`}
     >
       {label}
     </button>
@@ -131,12 +131,12 @@ export function AdminDashboard() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold text-[2be4a8] mb-6">Admin Dashboard</h1>
+      <h1 className="text-2xl font-bold text-[#2be4a8] mb-6">Admin Dashboard</h1>
       
       {/* Site Config Summary */}
       {siteConfig ? (
-        <div className="bg-[0f1420] border border-[22305c] rounded p-4 mb-6">
-          <h3 className="text-[2be4a8] mb-3">Site Configuration</h3>
+        <div className="bg-[#0f1420] border border-[#22305c] rounded p-4 mb-6">
+          <h3 className="text-[#2be4a8] mb-3">Site Configuration</h3>
           <div className="space-y-2 text-white/70">
             <p><strong>Name:</strong> {siteConfig.name}</p>
             {siteConfig.role && <p><strong>Role:</strong> {siteConfig.role}</p>}
@@ -146,53 +146,53 @@ export function AdminDashboard() {
             {siteConfig.address && <p><strong>Address:</strong> {siteConfig.address}</p>}
           </div>
           <div className="mt-4">
-            <button onClick={() => setSiteConfig(null)} className="bg-[dc2625] text-white px-3 py- rounded text-sm">Reset Config</button>
+            <button onClick={() => setSiteConfig(null)} className="bg-[#dc2625] text-white px-3 py- rounded text-sm">Reset Config</button>
           </div>
         </div>
       ) : (
-        <div className="bg-[0f1420] border border-[22305c] rounded p-4 mb-6">
-          <h3 className="text-[2be4a8] mb-3">Edit Site Configuration</h3>
+        <div className="bg-[#0f1420] border border-[#22305c] rounded p-4 mb-6">
+          <h3 className="text-[#2be4a8] mb-3">Edit Site Configuration</h3>
           <div className="space-y-3">
             <input
               value={newSiteName}
               onChange={(e) => setNewSiteName(e.target.value)}
-              className="w-full bg-[070b14] border border-[22305c] rounded px-3 py-2 text-white"
+              className="w-full bg-[#070b14] border border-[#22305c] rounded px-3 py-2 text-white"
               placeholder="Site name"
               required
             />
             <input
               value={newSiteRole}
               onChange={(e) => setNewSiteRole(e.target.value)}
-              className="w-full bg-[070b14] border border-[22305c] rounded px-3 py-2 text-white"
+              className="w-full bg-[#070b14] border border-[#22305c] rounded px-3 py-2 text-white"
               placeholder="Role/Tagline"
             />
             <input
               value={newSiteTagline}
               onChange={(e) => setNewSiteTagline(e.target.value)}
-              className="w-full bg-[070b14] border border-[22305c] rounded px-3 py-2 text-white"
+              className="w-full bg-[#070b14] border border-[#22305c] rounded px-3 py-2 text-white"
               placeholder="Tagline"
             />
             <input
               type="email"
               value={newSiteEmail}
               onChange={(e) => setNewSiteEmail(e.target.value)}
-              className="w-full bg-[070b14] border border-[22305c] rounded px-3 py-2 text-white"
+              className="w-full bg-[#070b14] border border-[#22305c] rounded px-3 py-2 text-white"
               placeholder="Email (optional)"
             />
             <input
               type="tel"
               value={newSitePhone}
               onChange={(e) => setNewSitePhone(e.target.value)}
-              className="w-full bg-[070b14] border border-[22305c] rounded px-3 py-2 text-white"
+              className="w-full bg-[#070b14] border border-[#22305c] rounded px-3 py-2 text-white"
               placeholder="Phone (optional)"
             />
             <input
               value={newSiteAddress}
               onChange={(e) => setNewSiteAddress(e.target.value)}
-              className="w-full bg-[070b14] border border-[22305c] rounded px-3 py-2 text-white"
+              className="w-full bg-[#070b14] border border-[#22305c] rounded px-3 py-2 text-white"
               placeholder="Address (optional)"
             />
-            <button onClick={saveSiteConfig} className="bg-[2be4a8] text-[04241a] px-4 py-2 rounded font-medium w-full">
+            <button onClick={saveSiteConfig} className="bg-[#2be4a8] text-[#04241a] px-4 py-2 rounded font-medium w-full">
               Save Configuration
             </button>
           </div>
@@ -207,50 +207,50 @@ export function AdminDashboard() {
 
       {tab === 'messages' && (
         <div className="space-y-4">
-          {messages.length === 0 && <p className="text-[8fa0b5] italic">Koi message nahi aaya ab tak.</p>}
+          {messages.length === 0 && <p className="text-[#8fa0b5] italic">Koi message nahi aaya ab tak.</p>}
           {messages.map((msg, i) => (
-            <div key={i} className="bg-[0f1420] border border-[22305c] rounded p-4">
+            <div key={i} className="bg-[#0f1420] border border-[#22305c] rounded p-4">
               <div className="flex justify-between items-start">
                 <div>
                   <p className="font-medium text-white">Name: {msg.name}</p>
-                  {msg.email && <p className="text-[8fa0b5] small">Email: {msg.email}</p>}
-                  {msg.phone && <p className="text-[8fa0b5] small">Phone: {msg.phone}</p>}
-                  <p className="text-[8fa0b5] small">Date: {msg.date}</p>
+                  {msg.email && <p className="text-[#8fa0b5] small">Email: {msg.email}</p>}
+                  {msg.phone && <p className="text-[#8fa0b5] small">Phone: {msg.phone}</p>}
+                  <p className="text-[#8fa0b5] small">Date: {msg.date}</p>
                 </div>
-                <button onClick={() => deleteMsg(i)} className="text-[dc2625] text-sm hover:opacity-80">Delete</button>
+                <button onClick={() => deleteMsg(i)} className="text-[#dc2625] text-sm hover:opacity-80">Delete</button>
               </div>
-              <p className="mt-2 text-[eaf0f7] whitespace-pre-wrap">{msg.message}</p>
+              <p className="mt-2 text-[#eaf0f7] whitespace-pre-wrap">{msg.message}</p>
             </div>
           ))}
-          <p className="text-[8fa0b5] small">Total messages: {messages.length}</p>
+          <p className="text-[#8fa0b5] small">Total messages: {messages.length}</p>
         </div>
       )}
 
       {tab === 'faqs' && (
         <div className="space-y-4">
-          <div className="bg-[0f1420] border border-[22305c] rounded p-4 space-y-2">
+          <div className="bg-[#0f1420] border border-[#22305c] rounded p-4 space-y-2">
             <input
-              className="w-full bg-[070b14] border border-[22305c] rounded px-3 py-2 text-white"
+              className="w-full bg-[#070b14] border border-[#22305c] rounded px-3 py-2 text-white"
               placeholder="Question"
               value={newFaq.q}
               onChange={(e) => setNewFaq({ ...newFaq, q: e.target.value })}
             />
             <textarea
-              className="w-full bg-[070b14] border border-[22305c] rounded px-3 py-2 text-white"
+              className="w-full bg-[#070b14] border border-[#22305c] rounded px-3 py-2 text-white"
               placeholder="Answer"
               rows={3}
               value={newFaq.a}
               onChange={(e) => setNewFaq({ ...newFaq, a: e.target.value })}
             />
-            <button onClick={addFaq} className="bg-[2be4a8] text-[04241a] px-4 py-2 rounded font-medium">Add FAQ</button>
+            <button onClick={addFaq} className="bg-[#2be4a8] text-[#04241a] px-4 py-2 rounded font-medium">Add FAQ</button>
           </div>
           {faqs.map((f, i) => (
-            <div key={i} className="bg-[0f1420] border border-[22305c] rounded p-4 flex justify-between gap-4">
+            <div key={i} className="bg-[#0f1420] border border-[#22305c] rounded p-4 flex justify-between gap-4">
               <div>
                 <p className="font-medium text-white">{f.q}</p>
-                <p className="text-[8fa0b5] small mt-1">{f.a}</p>
+                <p className="text-[#8fa0b5] small mt-1">{f.a}</p>
               </div>
-              <button onClick={() => deleteFaq(i)} className="text-[dc2625] text-sm hover:opacity-80">Delete</button>
+              <button onClick={() => deleteFaq(i)} className="text-[#dc2625] text-sm hover:opacity-80">Delete</button>
             </div>
           ))}
         </div>
@@ -258,48 +258,48 @@ export function AdminDashboard() {
 
       {tab === 'projects' && (
         <div className="space-y-4">
-          <div className="bg-[0f1420] border border-[22305c] rounded p-4 space-y-2">
+          <div className="bg-[#0f1420] border border-[#22305c] rounded p-4 space-y-2">
             <input
-              className="w-full bg-[070b14] border border-[22305c] rounded px-3 py-2 text-white"
+              className="w-full bg-[#070b14] border border-[#22305c] rounded px-3 py-2 text-white"
               placeholder="Project name"
               value={newProj.name}
               onChange={(e) => setNewProj({ ...newProj, name: e.target.value })}
             />
             <input
-              className="w-full bg-[070b14] border border-[22305c] rounded px-3 py-2 text-white"
+              className="w-full bg-[#070b14] border border-[#22305c] rounded px-3 py-2 text-white"
               placeholder="Project URL (e.g. https://your-project.vercel.app)"
               value={newProj.url}
               onChange={(e) => setNewProj({ ...newProj, url: e.target.value })}
             />
             <textarea
-              className="w-full bg-[070b14] border border-[22305c] rounded px-3 py-2 text-white"
+              className="w-full bg-[#070b14] border border-[#22305c] rounded px-3 py-2 text-white"
               placeholder="Project description"
               rows={2}
               value={newProj.desc}
               onChange={(e) => setNewProj({ ...newProj, desc: e.target.value })}
             />
             <input
-              className="w-full bg-[070b14] border border-[22305c] rounded px-3 py-2 text-white"
+              className="w-full bg-[#070b14] border border-[#22305c] rounded px-3 py-2 text-white"
               placeholder="Project image URL (optional - add screenshot/preview link)"
               value={newProj.imgUrl}
               onChange={(e) => setNewProj({ ...newProj, imgUrl: e.target.value })}
             />
-            <button onClick={addProj} className="bg-[2be4a8] text-[04241a] px-4 py-2 rounded font-medium w-full">
+            <button onClick={addProj} className="bg-[#2be4a8] text-[#04241a] px-4 py-2 rounded font-medium w-full">
               {newProj.name ? 'Update Project' : 'Add Project'}
             </button>
           </div>
           {projects.map((p, i) => (
-            <div key={i} className="bg-[0f1420] border border-[22305c] rounded p-4 flex justify-between gap-4">
+            <div key={i} className="bg-[#0f1420] border border-[#22305c] rounded p-4 flex justify-between gap-4">
               <div>
                 <p className="font-medium text-white">{p.name}</p>
-                {p.url && <p className="text-[8fa0b5] small" target="_blank" rel="noopener noreferrer">Visit: {p.url}</p>}
-                {p.imgUrl && <p className="text-[8fa0b5] small mt-1">Image: {p.imgUrl}</p>}
-                <p className="text-[8fa0b5] small mt-1">{p.desc}</p>
+                {p.url && <a href={p.url} className="text-[#8fa0b5] small block" target="_blank" rel="noopener noreferrer">Visit: {p.url}</a>}
+                {p.imgUrl && <p className="text-[#8fa0b5] small mt-1">Image: {p.imgUrl}</p>}
+                <p className="text-[#8fa0b5] small mt-1">{p.desc}</p>
               </div>
-              <button onClick={() => deleteProj(i)} className="text-[dc2625] text-sm hover:opacity-80">Delete</button>
+              <button onClick={() => deleteProj(i)} className="text-[#dc2625] text-sm hover:opacity-80">Delete</button>
             </div>
           ))}
-          <p className="text-[8fa0b5] small">Note: Projects stored in browser localStorage. Add image URLs to display project pictures.</p>
+          <p className="text-[#8fa0b5] small">Note: Projects stored in browser localStorage. Add image URLs to display project pictures.</p>
         </div>
       )}
     </div>

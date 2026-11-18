@@ -117,5 +117,6 @@ export function ProjectGrid() {
           </motion.a>
         );
       })}
+    </motion.div>
   );
 }
