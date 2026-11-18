@@ -1,0 +1,36 @@
+rules_version = '2';
+
+// Publish these in Firebase Console → Firestore Database → Rules.
+// Replace ADMIN_EMAIL_HERE with the admin account's email (same one created in Authentication → Users).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == 'ADMIN_EMAIL_HERE'
+        && request.auth.token.email_verified == true;
+    }
+
+    // Contact form: anyone can SEND a message (with sane limits), only the admin can read / delete.
+    match /messages/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['name', 'email', 'phone', 'message', 'createdAt'])
+        && request.resource.data.name is string && request.resource.data.name.size() <= 100
+        && request.resource.data.email is string && request.resource.data.email.size() <= 200
+        && request.resource.data.phone is string && request.resource.data.phone.size() <= 20
+        && request.resource.data.message is string && request.resource.data.message.size() > 0
+        && request.resource.data.message.size() <= 2000;
+      allow read, delete: if isAdmin();
+      allow update: if false;
+    }
+
+    // Projects and FAQs: public can read, only the admin can change.
+    match /projects/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /faqs/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}

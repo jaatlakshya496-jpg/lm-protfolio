@@ -1,46 +1,76 @@
-import { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { adminSignIn, describeError } from '../lib/db';
+import { firebaseReady } from '../config/firebase';
 
-const ADMIN_PASSWORD = 'lakshya2024'; // <-- Change this password to whatever you want
-
-export function AdminLogin({ onLogin }: { onLogin?: () => void }) {
+/** Admin login — Firebase Auth (email + password). No password lives in the code. */
+export function AdminLogin() {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [failed, setFailed] = useState(false);
+  const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
 
-  const handleLogin = () => {
-    if (password === ADMIN_PASSWORD) {
-      window.sessionStorage.setItem('adminLoggedIn', 'true');
-      setFailed(false);
-      onLogin?.();
-    } else {
-      setFailed(true);
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setBusy(true);
+    setError('');
+    try {
+      await adminSignIn(email.trim(), password);
+      // App listens to the auth state and opens the dashboard.
+    } catch (err) {
+      setError(describeError(err));
+    } finally {
+      setBusy(false);
     }
   };
 
-  if (window.sessionStorage.getItem('adminLoggedIn') === 'true') {
-    onLogin?.();
-    return null;
+  if (!firebaseReady) {
+    return (
+      <div className="max-w-sm mx-auto bg-[#070b18] border border-[#22305c] rounded-2xl p-8 text-center">
+        <h2 className="text-2xl font-bold text-[#2be4a8] mb-4">Admin</h2>
+        <p className="text-[#8fa0b5]">
+          Firebase abhi connect nahi hai. <code>src/config/firebase.ts</code> mein config bharo,
+          phir admin login chalega.
+        </p>
+      </div>
+    );
   }
 
   return (
-    <div className="max-w-sm mx-auto bg-[#070b18] border border-[#22305c] rounded-2xl p-8 text-center">
+    <form
+      onSubmit={handleLogin}
+      className="max-w-sm mx-auto bg-[#070b18] border border-[#22305c] rounded-2xl p-8 text-center"
+    >
       <h2 className="text-2xl font-bold text-[#2be4a8] mb-4">Admin</h2>
-      {failed && (
-        <p className="text-[#dc2625] mb-4">Sahi password na daalne ki wajah se login fail ho gaya.</p>
+      {error && (
+        <p className="text-[#dc2625] mb-4" role="alert">
+          {error}
+        </p>
       )}
       <input
+        type="email"
+        placeholder="Admin email"
+        autoComplete="username"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="w-full bg-[#070b14] border border-[#22305c] rounded px-3 py-2 text-white mb-3"
+        required
+      />
+      <input
         type="password"
-        placeholder="Password daal dein"
+        placeholder="Password"
+        autoComplete="current-password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         className="w-full bg-[#070b14] border border-[#22305c] rounded px-3 py-2 text-white mb-4"
         required
       />
       <button
-        onClick={handleLogin}
+        type="submit"
+        disabled={busy}
         className="bg-[#2be4a8] text-[#04241a] px-4 py-2 rounded font-medium w-full"
       >
-        Login
+        {busy ? 'Login ho raha hai…' : 'Login'}
       </button>
-    </div>
+    </form>
   );
 }

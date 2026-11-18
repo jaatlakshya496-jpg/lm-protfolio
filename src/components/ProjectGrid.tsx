@@ -2,8 +2,8 @@ import { motion } from 'motion/react';
 import { ExternalLink, Gamepad2, Globe, ArrowUpRight } from 'lucide-react';
 import { site } from '../config/site';
 import { useEffect, useState } from 'react';
-
-const PROJ_KEY = 'portfolio_projects';
+import { fetchProjects } from '../lib/db';
+import { firebaseReady } from '../config/firebase';
 
 const cardVariant = {
   hidden: { opacity: 0, y: 40, scale: 0.97 },
@@ -20,24 +20,21 @@ const staggerParent = {
   show: { transition: { staggerChildren: 0.15 } },
 };
 
-function loadProjects() {
-  try {
-    const stored = localStorage.getItem(PROJ_KEY);
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      if (Array.isArray(parsed) && parsed.length) return parsed;
-    }
-  } catch {}
-  return site.projects;
-}
-
 export function ProjectGrid() {
-  const [projects, setProjects] = useState(loadProjects());
+  const [projects, setProjects] = useState<any[]>([...site.projects]);
 
+  // Built-in projects first, then the ones added from the admin panel (Firestore).
   useEffect(() => {
-    const onStorage = () => setProjects(loadProjects());
-    window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+    if (!firebaseReady) return;
+    let alive = true;
+    fetchProjects()
+      .then((extra) => {
+        if (alive && extra.length) setProjects([...site.projects, ...extra]);
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
   }, []);
 
   if (!projects.length) return null;

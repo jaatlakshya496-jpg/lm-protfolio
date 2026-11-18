@@ -1,26 +1,23 @@
 import { useState, useEffect } from 'react';
 import { FAQS } from './Seo';
-
-const FAQ_KEY = 'portfolio_faqs';
-
-function loadFaqs() {
-  try {
-    const stored = localStorage.getItem(FAQ_KEY);
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      if (Array.isArray(parsed) && parsed.length) return parsed;
-    }
-  } catch {}
-  return FAQS;
-}
+import { fetchFaqs } from '../lib/db';
+import { firebaseReady } from '../config/firebase';
 
 export function FaqFull() {
-  const [items, setItems] = useState(loadFaqs());
+  const [items, setItems] = useState<any[]>([...FAQS]);
 
+  // Built-in FAQs first, then the ones added from the admin panel (Firestore).
   useEffect(() => {
-    const onStorage = () => setItems(loadFaqs());
-    window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+    if (!firebaseReady) return;
+    let alive = true;
+    fetchFaqs()
+      .then((extra) => {
+        if (alive && extra.length) setItems([...FAQS, ...extra]);
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
   }, []);
 
   return (

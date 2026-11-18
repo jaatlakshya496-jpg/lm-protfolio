@@ -1,18 +1,7 @@
 import React, { useState } from 'react';
 import { Send } from 'lucide-react';
 import { site } from '../config/site';
-
-const STORAGE_KEY = 'portfolio_messages';
-
-function readMessages(): Array<Record<string, string>> {
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
+import { sendMessage } from '../lib/db';
 
 export function ContactForm() {
   const [form, setForm] = useState({
@@ -22,6 +11,7 @@ export function ContactForm() {
     message: '',
   });
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
 
   const handleFormChange = (
@@ -36,7 +26,7 @@ export function ContactForm() {
     setError('');
   };
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const name = form.name.trim();
     const message = form.message.trim();
@@ -57,22 +47,19 @@ export function ContactForm() {
       return;
     }
 
+    setSending(true);
     try {
-      const current = readMessages();
-      const next = [
-        ...current,
-        {
-          name,
-          email: form.contactMethod === 'email' ? contactValue : '',
-          phone: form.contactMethod === 'phone' ? contactValue : '',
-          message,
-          date: new Date().toLocaleString(),
-        },
-      ];
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      await sendMessage({
+        name,
+        email: form.contactMethod === 'email' ? contactValue : '',
+        phone: form.contactMethod === 'phone' ? contactValue : '',
+        message,
+      });
     } catch {
       setError('Message submit nahi ho paya. Please try again.');
       return;
+    } finally {
+      setSending(false);
     }
 
     setError('');
@@ -169,8 +156,8 @@ export function ContactForm() {
           />
         </label>
         <div className="factions">
-          <button type="submit" className="btn primary magnetic">
-            <Send size={16} /> Submit
+          <button type="submit" className="btn primary magnetic" disabled={sending}>
+            <Send size={16} /> {sending ? 'Sending…' : 'Submit'}
           </button>
           {sent && (
             <span className="fsent" role="status">

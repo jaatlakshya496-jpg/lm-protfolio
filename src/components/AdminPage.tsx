@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useRoute } from '../router';
 import { Seo } from './Seo';
 import { AdminLogin } from './AdminLogin';
@@ -6,7 +5,6 @@ import { AdminDashboard } from './AdminDashboard';
 
 type AdminPageProps = {
   loggedIn: boolean;
-  onLogin: () => void;
   onLogout: () => void;
 };
 
@@ -14,18 +12,7 @@ type AdminPageProps = {
  * Dedicated /admin route — stays open on refresh because the URL itself
  * decides whether the panel is shown (not in-memory state).
  */
-export function AdminPage({ loggedIn, onLogin, onLogout }: AdminPageProps) {
-  // Check auth on mount — read from sessionStorage so it persists on refresh
-  useEffect(() => {
-    const isLoggedIn = window.sessionStorage.getItem('adminLoggedIn') === 'true';
-    if (isLoggedIn) {
-      onLogin();
-    } else {
-      // If not logged in, show login and prevent dashboard access
-      // The AdminLogin component will call onLogin when successful
-    }
-  }, [onLogin]);
-
+export function AdminPage({ loggedIn, onLogout }: AdminPageProps) {
   return (
     <section className="admin-page" style={{ padding: '36px 0 64px', minHeight: '70vh' }}>
       <Seo
@@ -58,7 +45,7 @@ export function AdminPage({ loggedIn, onLogin, onLogout }: AdminPageProps) {
           )}
         </div>
       </div>
-      {loggedIn ? <AdminDashboard /> : <AdminLogin onLogin={onLogin} />}
+      {loggedIn ? <AdminDashboard /> : <AdminLogin />}
     </section>
   );
 }

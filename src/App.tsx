@@ -9,6 +9,7 @@ import { Header, Footer } from './components/Chrome';
 import { Seo } from './components/Seo';
 import { useRoute, useLinkInterception, hrefFor, normalizePath, isKnownRoute, type Route } from './router';
 import { site } from './config/site';
+import { onAdminAuthChange, adminSignOut } from './lib/db';
 
 /** section id -> page that renders it */
 const SECTION_PAGE: Record<string, Route['name']> = {
@@ -53,13 +54,24 @@ export default function App() {
   const { route, navigate } = useRoute();
   const [adminLoggedIn, setAdminLoggedIn] = useState(false);
 
+  // Admin state comes from Firebase Auth (only loaded when the /admin page is open).
   useEffect(() => {
-    // Keep admin state in session storage so public visitors do not inherit an owner-only view.
-    const stored = window.sessionStorage.getItem('adminLoggedIn');
-    if (stored === 'true') {
-      setAdminLoggedIn(true);
-    }
-  }, []);
+    if (route.name !== 'admin') return;
+    let alive = true;
+    let unsubscribe: () => void = () => {};
+    onAdminAuthChange((signedIn) => {
+      if (alive) setAdminLoggedIn(signedIn);
+    })
+      .then((u) => {
+        if (alive) unsubscribe = u;
+        else u();
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+      unsubscribe();
+    };
+  }, [route.name]);
 
   useLinkInterception(navigate);
 
@@ -192,14 +204,9 @@ export default function App() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const handleLogin = () => {
-    setAdminLoggedIn(true);
-    window.sessionStorage.setItem('adminLoggedIn', 'true');
-  };
-
   const handleLogout = () => {
+    adminSignOut().catch(() => {});
     setAdminLoggedIn(false);
-    window.sessionStorage.removeItem('adminLoggedIn');
     // Logout ke baad site par wapas bhej do (panel URL-driven hai).
     if (route.name === 'admin') navigate(hrefFor('home'));
   };
@@ -263,7 +270,6 @@ export default function App() {
                   return (
                     <AdminPage
                       loggedIn={adminLoggedIn}
-                      onLogin={handleLogin}
                       onLogout={handleLogout}
                     />
                   );
